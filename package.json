@@ -1,0 +1,19 @@
+{
+  "name": "rangeshot",
+  "version": "1.0.0",
+  "description": "Chrome Extension to capture long screenshots between user-defined START and END points",
+  "type": "module",
+  "scripts": {
+    "build": "tsc --noEmit && node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "node --experimental-strip-types test/engine-verification.test.mjs",
+    "test:e2e": "node test/e2e-workflow.test.mjs",
+    "test": "node --experimental-strip-types test/engine-verification.test.mjs && node test/e2e-workflow.test.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.308",
+    "puppeteer-core": "^25.11.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.0"
+  }
+}

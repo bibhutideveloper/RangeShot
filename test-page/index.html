@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RangeShot - Test & Verification Fixture</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Dynamic Coordinate Ruler on left side -->
+  <div class="ruler" id="ruler"></div>
+
+  <!-- Fixed Header -->
+  <header class="fixed-header">
+    <h2>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+        <circle cx="12" cy="13" r="4"></circle>
+      </svg>
+      RangeShot Test Ground
+    </h2>
+    <span class="fixed-header-tag">Fixed Header Element (position: fixed)</span>
+  </header>
+
+  <!-- Fixed Floating Button -->
+  <button class="fixed-floating-btn" onclick="alert('Floating action button clicked')">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <circle cx="12" cy="12" r="10"></circle>
+      <polyline points="12 6 12 12 14 14"></polyline>
+    </svg>
+    Fixed Action Button
+  </button>
+
+  <div class="content-wrapper">
+
+    <!-- SECTION 1: HERO (approx Y: 0 - 850px) -->
+    <section class="section-hero" id="sec-1">
+      <span class="section-badge">Section 1 • Top of Document (Y: ~64px - 850px)</span>
+      <h1>RangeShot Vertical Capture Verification</h1>
+      <p class="lead">
+        This long-form test document is designed to validate all 8 acceptance testing scenarios (Test A through H) for RangeShot Chrome Extension Manifest V3.
+      </p>
+
+      <div class="test-box">
+        <h3>🎯 Test A Target Area (START near Top)</h3>
+        <p>Click START anywhere in this box (~Y: 300px), then scroll down several screens to Section 4 (~Y: 2800px) and select END. Confirm capture to verify multi-viewport vertical stitching with no gaps.</p>
+      </div>
+
+      <div class="test-box" style="border-color: #10b981;">
+        <h3>🎯 Test C Target Area (Same Viewport Range)</h3>
+        <p>Click START here (~Y: 550px) and END just below at (~Y: 750px). Both points are in the same visible screen. Confirm capture to verify single-slice sub-rectangle cropping.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 2: CARDS & DIAGRAMS (approx Y: 850px - 1800px) -->
+    <section class="section-cards" id="sec-2">
+      <span class="section-badge">Section 2 • Multi-card Grid (Y: ~850px - 1800px)</span>
+      <h2 class="section-title">Component Architecture Validation</h2>
+      <p class="lead">
+        Each card below tests horizontal layout fidelity across stitched seams. Check that texts and borders remain perfectly aligned without split text or vertical compression.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h4>1. Shadow DOM Isolation</h4>
+          <p>RangeShot injects UI into an open Shadow DOM root on <code>&lt;rangeshot-host&gt;</code> so host page CSS resets never compromise extension elements.</p>
+        </div>
+        <div class="card">
+          <h4>2. Document Coordinate Tracking</h4>
+          <p>Document coordinates are computed as <code>documentY = window.scrollY + clientY</code>, surviving normal scrolling and window resizes.</p>
+        </div>
+        <div class="card">
+          <h4>3. Slicing & DPR Math</h4>
+          <p>Canvas coordinates accurately multiply document dimensions by <code>window.devicePixelRatio</code>, ensuring crisp output at 100%, 125%, 150%, and 200% zoom.</p>
+        </div>
+        <div class="card">
+          <h4>4. Local-First Processing</h4>
+          <p>Zero telemetry. Zero external servers. All canvas operations execute in-memory inside the browser sandbox.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: DATA TABLES & NUMERICS (approx Y: 1800px - 2800px) -->
+    <section class="section-table" id="sec-3">
+      <span class="section-badge">Section 3 • Data Tables (Y: ~1800px - 2800px)</span>
+      <h2 class="section-title">Acceptance Test Matrix</h2>
+
+      <div class="test-box">
+        <h3>🎯 Test B Target Area (START in Middle)</h3>
+        <p>Click START here at ~Y: 1900px, then scroll down to Section 5 at ~Y: 4200px and click END. Verifies exact top and bottom cropping spanning across 3+ screen heights.</p>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Scenario</th>
+            <th>Description</th>
+            <th>Expected Behavior</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Test A</strong></td>
+            <td>START near top → END several screens below</td>
+            <td>Multi-viewport scrolling, stitched PNG with no vertical gaps or duplicate rows</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test B</strong></td>
+            <td>START in middle → END further down</td>
+            <td>Exact top cropping at startY, exact bottom cropping at endY</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test C</strong></td>
+            <td>START & END in same viewport</td>
+            <td>Sub-rectangle crop without unnecessary multi-scrolling</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test D</strong></td>
+            <td>START near bottom → END at page limit</td>
+            <td>Handles scroll clamping at document bottom without crashing or infinite loops</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test E</strong></td>
+            <td>Inverted selection (START below END)</td>
+            <td>Automatically normalizes/swaps coordinates so startY &lt; endY</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test F</strong></td>
+            <td>Cancellation & Reset</td>
+            <td>Pressing Escape or clicking Cancel cleanly dismisses overlay and restores scroll</td>
+            <td>Ready</td>
+          </tr>
+          <tr>
+            <td><strong>Test G</strong></td>
+            <td>Browser Zoom (125%, 150%)</td>
+            <td>Coordinates scaled accurately using devicePixelRatio</td>
+            <td>Ready</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- SECTION 4: VISUAL PALETTE (approx Y: 2800px - 3800px) -->
+    <section class="section-palette" id="sec-4">
+      <span class="section-badge">Section 4 • Color Palette (Y: ~2800px - 3800px)</span>
+      <h2 class="section-title">High-Contrast Color Blocks</h2>
+      <p class="lead">
+        Notice whether color seams or jagged lines appear between adjacent viewports when stitching through this section.
+      </p>
+
+      <div class="palette-grid">
+        <div class="color-block" style="background: #ef4444;">Crimson Red (#ef4444)</div>
+        <div class="color-block" style="background: #f97316;">Vibrant Orange (#f97316)</div>
+        <div class="color-block" style="background: #eab308;">Amber Yellow (#eab308)</div>
+        <div class="color-block" style="background: #22c55e;">Emerald Green (#22c55e)</div>
+        <div class="color-block" style="background: #06b6d4;">Cyan (#06b6d4)</div>
+        <div class="color-block" style="background: #3b82f6;">Royal Blue (#3b82f6)</div>
+        <div class="color-block" style="background: #8b5cf6;">Violet Purple (#8b5cf6)</div>
+        <div class="color-block" style="background: #ec4899;">Hot Pink (#ec4899)</div>
+      </div>
+    </section>
+
+    <!-- SECTION 5: GALLERY & METRICS (approx Y: 3800px - 4800px) -->
+    <section class="section-gallery" id="sec-5">
+      <span class="section-badge">Section 5 • Deep Document Section (Y: ~3800px - 4800px)</span>
+      <h2 class="section-title">Deep Scroll Verification Area</h2>
+      <p class="lead">
+        This area validates that long distance scrolling retains exact coordinate accuracy and scroll restoration returns the viewport to its pre-capture location.
+      </p>
+
+      <div class="test-box">
+        <h3>🎯 Test E Target Area (Inverted Selection)</h3>
+        <p>Test selecting in reverse: Click START down here (~Y: 4400px), scroll UP to Section 3 (~Y: 2200px), and click END. The extension will automatically normalize and capture from top to bottom correctly.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <h4>Viewport Depth</h4>
+          <p>Currently ~4,000px down from page origin. Viewport capture engine automatically scrolls in calculated chunks and stitches images consecutively.</p>
+        </div>
+        <div class="card">
+          <h4>Scroll Restoration</h4>
+          <p>Prior to capturing, <code>PageStateManager</code> captures <code>window.scrollY</code> and restores it instantly via <code>window.scrollTo({ behavior: 'instant' })</code>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 6: LONG FORM TEXT (approx Y: 4800px - 5600px) -->
+    <section class="section-articles" id="sec-6">
+      <span class="section-badge">Section 6 • Long Form Content (Y: ~4800px - 5600px)</span>
+      <h2 class="section-title">High Density Typography</h2>
+      <p style="margin-bottom: 16px;">
+        Typography tests confirm that antialiased fonts do not display blurry horizontal slice seams. High DPI displays (DPR = 1.25, 1.5, or 2.0) render text with sharp sub-pixel positioning.
+      </p>
+      <p style="margin-bottom: 16px;">
+        Unlike naive screenshot tools that blindly glue viewport images together and duplicate sticky navbars or cut off paragraphs mid-line, RangeShot uses exact document coordinate delta mapping. Every slice occupies an exact offset relative to the user's initial START point.
+      </p>
+
+      <div class="test-box" style="border-color: #e11d48;">
+        <h3>🎯 Test D Target Area (Bottom Boundary)</h3>
+        <p>Click START at ~Y: 5200px and END near the bottom of Section 7 (~Y: 5900px). Verifies that when the browser cannot scroll past <code>scrollHeight - innerHeight</code>, the bottom slice is still positioned and cropped accurately.</p>
+      </div>
+    </section>
+
+    <!-- SECTION 7: FOOTER & BOTTOM LIMIT (approx Y: 5600px - 6400px) -->
+    <section class="section-footer" id="sec-7">
+      <span class="section-badge">Section 7 • Page Footer (Y: ~5600px - 6400px)</span>
+      <h2 class="section-title" style="color: #fff;">Document Boundary Limit</h2>
+      <p class="lead" style="color: #94a3b8;">
+        This marks the end of the document (~6,400px total height).
+      </p>
+      <p style="color: #64748b; font-size: 13px;">
+        RangeShot Extension • Manifest V3 Production Implementation • Phase 1
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Dynamic Ruler generation script -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const ruler = document.getElementById('ruler');
+      const docHeight = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+      const step = 100;
+
+      for (let y = 0; y <= docHeight; y += step) {
+        const mark = document.createElement('div');
+        const isMajor = y % 500 === 0;
+        mark.className = `ruler-mark ${isMajor ? 'major' : 'minor'}`;
+        mark.style.top = y + 'px';
+        if (isMajor) {
+          mark.textContent = y + 'px';
+        }
+        ruler.appendChild(mark);
+      }
+    });
+  </script>
+</body>
+</html>
